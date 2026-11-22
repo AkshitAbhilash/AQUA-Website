@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080d1c">
+
+    <title>AQUA | Beyond the Ordinary</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <div class="stars"></div>
+
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-icon">✦</span>
+            <span>AQUA</span>
+        </div>
+
+        <button class="cart-button" id="cartButton">
+            🛒 <span>Cart</span>
+            <span id="cartCount">0</span>
+        </button>
+    </header>
+
+    <main class="food-app">
+
+        <section class="food-heading">
+            <div>
+                <p class="section-tag">✦ BEYOND THE ORDINARY</p>
+                <h1>Explore <span>Menu</span></h1>
+                <p class="food-subtitle">Discover something delicious today.</p>
+            </div>
+            <div class="heading-decoration">✧</div>
+        </section>
+
+        <section class="search-section">
+            <span>⌕</span>
+            <input
+                type="search"
+                id="menuSearch"
+                placeholder="Search your favourite food..."
+                autocomplete="off"
+            >
+        </section>
+
+        <nav class="category-tabs" id="categoryTabs" aria-label="Menu categories">
+            <button class="category-tab active" data-category="All">All Menu</button>
+        </nav>
+
+        <section class="menu-section">
+            <div class="menu-section-heading">
+                <div>
+                    <p class="section-tag">MADE FOR YOU</p>
+                    <h2 id="selectedCategoryTitle">All <span>Menu</span></h2>
+                </div>
+                <span class="menu-count" id="menuItemCount"></span>
+            </div>
+
+            <div id="menuContainer">
+                <p class="loading-message">Preparing the AQUA menu...</p>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+            <div class="brand">✦ AQUA ✦</div>
+            <p>BEYOND THE ORDINARY.</p>
+            <p class="footer-small">A celestial food experience.</p>
+        </footer>
+    </main>
+
+    <!-- Cart -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <button class="close-button" id="closeCart">✕</button>
+
+            <p class="section-tag">YOUR SELECTION</p>
+            <h2>Your <span>Cart</span></h2>
+
+            <div id="cartItems">
+                <p>Your cart is empty.</p>
+            </div>
+
+            <div class="cart-total">
+                <span>Total</span>
+                <strong id="cartTotal">₹0.00</strong>
+            </div>
+
+            <form id="checkoutForm">
+                <label for="customerName">
+                    Your name <span>(Optional)</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="customerName"
+                    placeholder="Enter your name"
+                    maxlength="60"
+                >
+
+                <button type="submit" id="placeOrderButton">
+                    PLACE ORDER
+                </button>
+            </form>
+
+            <p id="orderMessage" class="order-message"></p>
+        </div>
+    </div>
+
+    
+<!-- ORDER CONFIRMATION MODAL -->
+<div class="modal" id="confirmationModal">
+    <div class="modal-content confirmation-content">
+        <div class="success-icon">✓</div>
+
+        <p class="section-tag">ORDER CONFIRMED</p>
+        <h2>Thank <span>You!</span></h2>
+
+        <p>Your order token is:</p>
+
+        <div class="token-display" id="tokenDisplay">---</div>
+
+        <p class="confirmation-note">
+            Keep your token number safe.
+            Show it when collecting your order.
+        </p>
+
+        <button id="doneButton">DONE</button>
+    </div>
+</div>
+
+<!-- PERSISTENT ORDER TOKEN -->
+<div id="persistentToken" class="persistent-token" hidden>
+    <div>
+        <p>YOUR ORDER TOKEN</p>
+        <strong id="persistentTokenNumber">---</strong>
+        <span>Keep this number safe for collection.</span>
+    </div>
+</div>
+
+    <!-- Sticky bottom cart bar -->
+    <div class="bottom-cart-bar" id="bottomCartBar">
+        <div class="bottom-cart-info">
+            <span class="bottom-cart-icon">🛒</span>
+            <div>
+                <strong id="bottomCartCount">0 Items</strong>
+                <small id="bottomCartTotal">₹0.00</small>
+            </div>
+        </div>
+
+        <button type="button" id="bottomCartButton">
+            VIEW ORDER <span>→</span>
+        </button>
+    </div>
+</body>
+</html>

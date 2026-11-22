@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AQUA | Beyond the Ordinary</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="stars"></div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-icon">✦</span>
+            <span>AQUA</span>
+        </div>
+
+        <button class="cart-button" id="cartButton">
+            🛒 Cart
+            <span id="cartCount">0</span>
+        </button>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <p class="hero-tag">✦ A CELESTIAL FOOD EXPERIENCE ✦</p>
+
+        <h1>WELCOME TO <span>AQUA</span></h1>
+
+        <p class="hero-description">
+            Explore the flavours of our universe.
+            Choose your favourites and place your order.
+        </p>
+
+        <a href="#menu" class="explore-button">
+            EXPLORE MENU ↓
+        </a>
+    </section>
+
+    <!-- Menu -->
+    <main id="menu">
+
+        <div class="section-heading">
+            <p class="section-tag">DISCOVER OUR COLLECTION</p>
+            <h2>THE <span>MENU</span></h2>
+        </div>
+
+        <div id="menuContainer">
+            <p class="loading-message">Loading the AQUA menu...</p>
+        </div>
+
+    </main>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+
+            <button class="close-button" id="closeCart">✕</button>
+
+            <p class="section-tag">YOUR SELECTION</p>
+            <h2>YOUR <span>CART</span></h2>
+
+            <div id="cartItems">
+                <p>Your cart is empty.</p>
+            </div>
+
+            <div class="cart-total">
+                <span>Total</span>
+                <strong id="cartTotal">₹0.00</strong>
+            </div>
+
+            
+<form id="checkoutForm">
+
+    <label for="customerName">
+        Your name <span>(Optional)</span>
+    </label>
+
+    <input
+        type="text"
+        id="customerName"
+        placeholder="Enter your name"
+        maxlength="60"
+    >
+
+    <button type="submit" id="placeOrderButton">
+        PLACE ORDER
+    </button>
+
+</form>
+
+
+            <p id="orderMessage" class="order-message"></p>
+
+        </div>
+    </div>
+
+    <!-- Order Confirmation -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content confirmation-content">
+
+            <div class="success-icon">✓</div>
+
+            <p class="section-tag">ORDER CONFIRMED</p>
+            <h2>THANK <span>YOU!</span></h2>
+
+            <p>Your order token is:</p>
+
+            <div class="token-display" id="tokenDisplay">
+                482
+            </div>
+
+            <p class="confirmation-note">
+                Keep your token number safe.
+                Show it when collecting your order.
+            </p>
+
+            <button id="doneButton">DONE</button>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="brand">✦ AQUA ✦</div>
+        <p>BEYOND THE ORDINARY.</p>
+        <p class="footer-small">A celestial food experience.</p>
+    </footer>
+
+</body>
+</html>
