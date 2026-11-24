@@ -508,7 +508,134 @@ document.getElementById("doneButton")
 
 loadMenu();
 updateCart();
+// =========================================
+// AQUA CUSTOM READY NOTIFICATION
+// =========================================
 
+function showReadyNotification() {
+    // Remove an existing notification if present
+    document.getElementById("aquaReadyNotification")?.remove();
+
+    const notification = document.createElement("div");
+    notification.id = "aquaReadyNotification";
+
+    const token = document
+        .getElementById("persistentTokenNumber")
+        ?.textContent.trim();
+
+    notification.innerHTML = `
+        <div class="aqua-ready-icon">✓</div>
+        <div class="aqua-ready-content">
+            <h2>YOUR ORDER IS READY!</h2>
+            <p>Your order is ready for collection.</p>
+            <strong>Order #${token || "---"}</strong>
+            <p class="aqua-ready-thanks">
+                Thank you for choosing AQUA!
+            </p>
+        </div>
+        <button id="aquaReadyClose" aria-label="Close notification">
+            ×
+        </button>
+    `;
+
+    const style = document.createElement("style");
+    style.id = "aquaReadyStyles";
+
+    if (!document.getElementById("aquaReadyStyles")) {
+        style.textContent = `
+            #aquaReadyNotification {
+                position: fixed;
+                right: 20px;
+                bottom: 25px;
+                z-index: 99999;
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                width: min(390px, calc(100% - 30px));
+                padding: 22px;
+                border: 1px solid #36C5E8;
+                border-radius: 18px;
+                background: linear-gradient(135deg, #101B35, #070B19);
+                color: #EAF4FF;
+                box-shadow: 0 0 25px rgba(54, 197, 232, 0.3);
+                font-family: Arial, sans-serif;
+                animation: aquaSlideIn 0.5s ease forwards;
+            }
+
+            .aqua-ready-icon {
+                width: 38px;
+                height: 38px;
+                flex-shrink: 0;
+                display: grid;
+                place-items: center;
+                border-radius: 50%;
+                background: #36C5E8;
+                color: #070B19;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            .aqua-ready-content h2 {
+                margin: 0 0 9px;
+                color: #36C5E8;
+                font-size: 17px;
+            }
+
+            .aqua-ready-content p {
+                margin: 6px 0;
+                color: #EAF4FF;
+                font-size: 14px;
+            }
+
+            .aqua-ready-content strong {
+                display: inline-block;
+                margin-top: 9px;
+                font-size: 23px;
+                color: #36C5E8;
+            }
+
+            .aqua-ready-content .aqua-ready-thanks {
+                color: #91A4BD;
+                font-size: 12px;
+            }
+
+            #aquaReadyClose {
+                margin-left: auto;
+                border: 0;
+                background: transparent;
+                color: #91A4BD;
+                font-size: 25px;
+                cursor: pointer;
+            }
+
+            @keyframes aquaSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(25px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @media (max-width: 480px) {
+                #aquaReadyNotification {
+                    right: 15px;
+                    bottom: 15px;
+                }
+            }
+        `;
+
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(notification);
+
+    document.getElementById("aquaReadyClose").onclick = () => {
+        notification.remove();
+    };
+}
 // =========================================
 // AQUA CUSTOMER ORDER NOTIFICATIONS
 // =========================================
@@ -555,7 +682,7 @@ function startOrderStatusTracking() {
                     clearInterval(orderTrackingInterval);
                     orderTrackingInterval = null;
 
-                    alert("🌌 AQUA UPDATE!\n\nYour order is READY! Please collect it.");
+                    showReadyNotification();
                 }
             }
         } catch (error) {
