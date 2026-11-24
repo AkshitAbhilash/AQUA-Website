@@ -382,7 +382,7 @@ async function placeOrder(event) {
         }));
 
         const { data, error } = await supabaseClient.rpc(
-            "create_order",
+            "create_tracked_order",
             {
                 p_customer_name: customerName || null,
                 p_customer_phone: null,
@@ -392,15 +392,23 @@ async function placeOrder(event) {
 
         if (error) throw error;
 
-        if (!data) {
-            throw new Error("No token was returned.");
+       if (!data || !data.token || !data.order_id || !data.tracking_key) {
+    throw new Error("Order tracking information was not returned.");
         }
 
+// Save private tracking details for this customer
+localStorage.setItem("aqua_order_id", data.order_id);
+localStorage.setItem("aqua_tracking_key", data.tracking_key);
+
+startOrderStatusTracking();
+
+
         // Display token in confirmation popup
-        document.getElementById("tokenDisplay").textContent = data;
+        document.getElementById("tokenDisplay").textContent = data.token;
+
 
         // Display token permanently until page refresh
-        document.getElementById("persistentTokenNumber").textContent = data;
+        document.getElementById("persistentTokenNumber").textContent = data.token;
         document.getElementById("persistentToken").hidden = false;
 
         cart = [];
@@ -424,7 +432,6 @@ async function placeOrder(event) {
         button.textContent = "PLACE ORDER";
     }
 }
-
 // =========================================
 // EVENT LISTENERS
 // =========================================
@@ -501,3 +508,61 @@ document.getElementById("doneButton")
 
 loadMenu();
 updateCart();
+
+// =========================================
+// AQUA CUSTOMER ORDER NOTIFICATIONS
+// =========================================
+
+let orderTrackingInterval = null;
+
+function startOrderStatusTracking() {
+    // Avoid creating duplicate timers
+    if (orderTrackingInterval) {
+        clearInterval(orderTrackingInterval);
+    }
+
+    const orderId = localStorage.getItem("aqua_order_id");
+    const trackingKey = localStorage.getItem("aqua_tracking_key");
+
+    if (!orderId || !trackingKey) return;
+
+    orderTrackingInterval = setInterval(async () => {
+        try {
+            const { data, error } = await supabaseClient.rpc(
+                "get_customer_order_status",
+                {
+                    p_order_id: orderId,
+                    p_tracking_key: trackingKey
+                }
+            );
+
+            if (error) {
+                console.error("Order tracking error:", error);
+                return;
+            }
+
+            if (data === "Ready") {
+                const notifiedOrder = localStorage.getItem(
+                    "aqua_notified_order"
+                );
+
+                if (notifiedOrder !== orderId) {
+                    localStorage.setItem(
+                        "aqua_notified_order",
+                        orderId
+                    );
+
+                    clearInterval(orderTrackingInterval);
+                    orderTrackingInterval = null;
+
+                    alert("🌌 AQUA UPDATE!\n\nYour order is READY! Please collect it.");
+                }
+            }
+        } catch (error) {
+            console.error("Notification error:", error);
+        }
+    }, 5000);
+}
+
+// Resume tracking when the customer opens or refreshes the website
+startOrderStatusTracking();
