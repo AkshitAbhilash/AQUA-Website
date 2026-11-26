@@ -94,9 +94,9 @@ function displayMenu() {
 
     let filteredItems = menuItems.filter(item => {
         const matchesCategory =
-            selectedCategory === "All" ||
-            item.category === selectedCategory;
-
+        selectedCategory === "All"
+            ? item.category !== "Combos"
+            : item.category === selectedCategory;
         const matchesSearch =
             item.name.toLowerCase().includes(search) ||
             (item.description || "").toLowerCase().includes(search);
